@@ -1,0 +1,51 @@
+// Code your testbench here
+// or browse Examples
+class transaction;
+  randc bit[7:0] data;
+endclass
+
+class generator;
+  transaction trans;
+  mailbox mbx;
+  
+  function new(mailbox mbx);
+    this.mbx=mbx;
+  endfunction
+  
+  task run();
+    trans=new();
+    trans.randomize();
+    mbx.put(trans);
+    $display("data is %0d",trans.data);
+  endtask
+endclass
+
+class driver;
+  
+  transaction trans;
+  mailbox mbx;
+  
+  function new(mailbox mbx);
+    this.mbx=mbx;
+  endfunction
+  
+  task run();
+    trans=new();
+    mbx.get(trans);
+    $display("recieved data is %0d" , trans.data);
+  endtask
+endclass
+  
+module tb;
+  generator gen;
+  driver drv;
+  mailbox mbx = new();
+  
+  initial begin
+    gen=new(mbx);
+    drv=new(mbx);
+    gen.run();
+    drv.run;
+  end
+endmodule
+    
