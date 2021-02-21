@@ -1,5 +1,8 @@
+// system verilog code
 // Code your testbench here
 // or browse Examples
+/*____________________________________________________________
+
 class transaction;
   randc bit[7:0] data;
 endclass
